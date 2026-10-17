@@ -15,4 +15,16 @@ dependencyResolutionManagement {
 }
 
 gradle.ext.androidxMediaModulePrefix = 'TMessagesProj_Modules:media3:media-'
-apply from: file("TMessagesProj_Modules/media/core_settings.gradle")
+def mediaSettingsFile = file("TMessagesProj_Modules/media/core_settings.gradle")
+if (!mediaSettingsFile.exists()) {
+    try {
+        exec {
+            commandLine 'git', 'submodule', 'update', '--init', '--recursive'
+        }
+    } catch (Exception e) {
+        // Log warning if git command fails
+    }
+}
+if (mediaSettingsFile.exists()) {
+    apply from: mediaSettingsFile
+}
