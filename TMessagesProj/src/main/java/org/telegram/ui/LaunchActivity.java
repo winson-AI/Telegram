@@ -1086,7 +1086,10 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
     }
 
     private BaseFragment getClientNotActivatedFragment() {
-        return new LoginActivity();
+        if (LoginActivity.loadCurrentState(false, currentAccount).getInt("currentViewNum", 0) != 0) {
+            return new LoginActivity();
+        }
+        return new IntroActivity();
     }
 
     public FireworksOverlay getFireworksOverlay() {
@@ -1255,7 +1258,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                 layersActionBarLayout.rebuildLogout();
                 rightActionBarLayout.rebuildLogout();
             }
-            presentFragment(new LoginActivity());
+            presentFragment(new IntroActivity().setOnLogout());
         }
     }
 
